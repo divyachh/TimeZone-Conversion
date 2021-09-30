@@ -1,0 +1,35 @@
+public class TimeZoneService{
+    
+    public static string EST='America/New_York';
+    ///Convert Any time to other timezone
+    public Time convertTimeToOtherTimeZone(DateTime dttime, string sourceTimezone, string targetTimezone)
+    {
+        TimeZone tz = Timezone.getTimeZone(sourceTimezone);
+        System.debug('Display name: ' + tz.getDisplayName());
+        System.debug('ID: ' + tz.getID());
+        
+        Integer offset=tz.getOffset(dttime);
+        System.debug('Offset: ' + offset);
+        
+        // target Timezone.
+        TimeZone targetTZ = Timezone.getTimeZone(targetTimezone);
+        System.debug('Display name: ' + targetTZ.getDisplayName());
+        integer offsetTotargetTZ = targetTZ.getOffset(dttime);
+       	integer correction = offsetTotargetTZ- offset;
+		    
+        DateTime targetDT = dttime.addMinutes(correction / (1000 * 60));
+        
+        return Time.newInstance(targetDT.hour(), targetDT.minute(), targetDT.second(), targetDT.millisecond());
+    }
+}
+
+
+// To convert Date time to another time zone use:
+DateTime dtTime=DateTime.now();
+DateTime dtTimeTimeZone=new TimeZoneService() .convertDateTimeToOtherTimeZone(dtTime, 'America/Santiago','America/New_York');
+
+// to convert time to another time zone use:
+Date dt = Date.today();
+Time tm=acct.TimeToCall__c;
+DateTime dtTime=DateTime.newInstance(dt.year(),dt.month(),dt.day(),tm.hour(),tm.minute(),tm.second());
+ DateTime dtTimeTimeZone=new TimeZoneService().convertDateTimeToOtherTimeZone(dtTime, 'America/Santiago','America/New_York');
